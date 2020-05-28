@@ -1,5 +1,37 @@
 <template>
-    <div>{{bloggerData.name}}</div>
+    <div class="hello">
+        <div>
+            <el-button
+                    type="primary"
+                    icon="fas fa-edit"
+                    @click="handleClickLogin"
+                    :disabled="!isInit"
+            >get authCode</el-button>
+            <el-button
+                    type="primary"
+                    icon="fas fa-edit"
+                    @click="handleClickSignIn"
+                    v-if="!isSignIn"
+                    :disabled="!isInit"
+            >sign in</el-button>
+            <el-button
+                    type="primary"
+                    icon="fas fa-edit"
+                    @click="handleClickSignOut"
+                    v-if="isSignIn"
+                    :disabled="!isInit"
+            >sign out</el-button>
+            <el-button
+                    type="primary"
+                    icon="fas fa-edit"
+                    @click="handleClickDisconnect"
+                    :disabled="!isInit"
+            >disconnect</el-button>
+            <i class="fas fa-edit"></i>
+            <p>isInit: {{isInit}}</p>
+            <p>isSignIn: {{isSignIn}}</p>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -7,12 +39,15 @@
 
         data(){
             return{
-                bloggerData: null
+                bloggerData: null,
+                isInit: false,
+                isSignIn: false
             }
         },
-        mounted(){
+        mounted() {
             var vm = this
             vm.fetchBloggerApi()
+
         },
         methods:{
             fetchBloggerApi(){
@@ -25,7 +60,63 @@
                     .catch(function (error) {
                         console.log(error);
                     });
+            },
+            handleClickLogin() {
+                this.$gAuth
+                    .getAuthCode()
+                    .then(authCode => {
+                        //on success
+                        console.log("authCode", authCode);
+                    })
+                    .catch(error => {
+                        //on fail do something
+                        console.error(error);
+                    });
+            },
+            handleClickSignIn() {
+                this.$gAuth
+                    .signIn()
+                    .then(GoogleUser => {
+                        //on success do something
+                        console.log("GoogleUser", GoogleUser);
+                        console.log("getId", GoogleUser.getId());
+                        console.log("getBasicProfile", GoogleUser.getBasicProfile());
+                        console.log("getAuthResponse", GoogleUser.getAuthResponse());
+                        console.log(
+                            "getAuthResponse",
+                            this.$gAuth.GoogleAuth.currentUser.get().getAuthResponse()
+                        );
+                        this.isSignIn = this.$gAuth.isAuthorized;
+                    })
+                    .catch(error => {
+                        //on fail do something
+                        console.error(error);
+                    });
+            },
+            handleClickSignOut() {
+                this.$gAuth
+                    .signOut()
+                    .then(() => {
+                        //on success do something
+                        this.isSignIn = this.$gAuth.isAuthorized;
+                        console.log("isSignIn", this.$gAuth.isAuthorized);
+                    })
+                    .catch(error => {
+                        //on fail do something
+                        console.error(error);
+                    });
+            },
+            handleClickDisconnect() {
+                window.location.href = `https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=${window.location.href}`;
             }
+        },
+        created() {
+            let that = this;
+            let checkGauthLoad = setInterval(function() {
+                that.isInit = that.$gAuth.isInit;
+                that.isSignIn = that.$gAuth.isAuthorized;
+                if (that.isInit) clearInterval(checkGauthLoad);
+            }, 1000);
         }
     }
 </script>
