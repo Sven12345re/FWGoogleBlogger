@@ -3,27 +3,23 @@
         <div>
             <el-button
                     type="primary"
-                    icon="fas fa-edit"
                     @click="handleClickLogin"
                     :disabled="!isInit"
             >get authCode</el-button>
             <el-button
                     type="primary"
-                    icon="fas fa-edit"
                     @click="handleClickSignIn"
                     v-if="!isSignIn"
                     :disabled="!isInit"
             >sign in</el-button>
             <el-button
                     type="primary"
-                    icon="fas fa-edit"
                     @click="handleClickSignOut"
                     v-if="isSignIn"
                     :disabled="!isInit"
             >sign out</el-button>
             <el-button
                     type="primary"
-                    icon="fas fa-edit"
                     @click="handleClickDisconnect"
                     :disabled="!isInit"
             >disconnect</el-button>
