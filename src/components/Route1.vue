@@ -1,6 +1,6 @@
 <template>
     <div class="hello">
-        <div>
+        <div style="display: flex">
             <el-button
                     type="primary"
                     @click="handleClickLogin"
@@ -23,9 +23,30 @@
                     @click="handleClickDisconnect"
                     :disabled="!isInit"
             >disconnect</el-button>
+            <el-button
+                    type="primary"
+                    @click="getAllBlogs"
+                    :disabled="!isInit"
+            >Get All Blogs</el-button>
             <i class="fas fa-edit"></i>
-            <p>isInit: {{isInit}}</p>
-            <p>isSignIn: {{isSignIn}}</p>
+            <p>isInit: {{isInit}}</p> |
+            <p>isSignIn: {{isSignIn}}</p> |
+            <div>Username: {{username}}</div>
+        </div>
+        <div style="display: flex">
+            <ul id="example-1">
+                <li v-for="item in allBlogs" :key="item.name">
+                    <button @click="postsOfBlog(item.id)">{{ item.name }}</button>
+                </li>
+            </ul>
+            <ul id="example-2" style="margin: 2em" v-if="allPostsOfBlog != 'Keine Posts'">
+                <li v-for="item in allPostsOfBlog" :key="item.title">
+                    {{ item.title }}
+                </li>
+            </ul>
+            <ul v-else style="margin: 2em">
+                <li>Keine Posts</li>
+            </ul>
         </div>
     </div>
 </template>
@@ -37,26 +58,19 @@
             return{
                 bloggerData: null,
                 isInit: false,
-                isSignIn: false
+                isSignIn: false,
+                accesTokken:0,
+                allBlogs: '',
+                allPostsOfBlog: '',
+                username:''
             }
         },
         mounted() {
-            var vm = this
-            vm.fetchBloggerApi()
+
 
         },
         methods:{
-            fetchBloggerApi(){
-                var vm = this;
-                const axios = require('axios');
-                axios.get('https://www.googleapis.com/blogger/v3/blogs/1638418377018710180?key=AIzaSyBjTdt2MEa14lzK0EakTkL4pgRCNg4I7zc')
-                    .then(function (response) {
-                        vm.bloggerData = response.data
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            },
+
             handleClickLogin() {
                 this.$gAuth
                     .getAuthCode()
@@ -83,6 +97,8 @@
                             this.$gAuth.GoogleAuth.currentUser.get().getAuthResponse()
                         );
                         this.isSignIn = this.$gAuth.isAuthorized;
+                        this.accessToken = GoogleUser.getAuthResponse()['access_token'];
+                        this.username = GoogleUser.getBasicProfile()['Bd'];
                     })
                     .catch(error => {
                         //on fail do something
@@ -104,6 +120,34 @@
             },
             handleClickDisconnect() {
                 window.location.href = `https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=${window.location.href}`;
+            },
+            getAllBlogs(){
+
+                const axios = require('axios');
+                axios.get('https://www.googleapis.com/blogger/v3/users/self/blogs?access_token=' + this.accessToken)
+                    .then(response => {
+                        this.allBlogs = response.data['items']
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+
+            },
+            postsOfBlog(id){
+
+                const axios = require('axios');
+                axios.get('https://www.googleapis.com/blogger/v3/blogs/'+ id +'/posts?key=AIzaSyBjTdt2MEa14lzK0EakTkL4pgRCNg4I7zc')
+                    .then(response => {
+                        if (response.data.items != undefined){
+                            this.allPostsOfBlog = response.data['items']
+                        }else {
+                            this.allPostsOfBlog = 'Keine Posts'
+                        }
+
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             }
         },
         created() {
