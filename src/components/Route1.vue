@@ -41,7 +41,7 @@
             </ul>
             <ul id="example-2" style="margin: 2em" v-if="allPostsOfBlog != 'Keine Posts'">
                 <li v-for="item in allPostsOfBlog" :key="item.title">
-                    {{ item.title }}
+                    <button @click="deleteABlog(item.blog.id, item.id)">{{ item.title }}</button>
                 </li>
             </ul>
             <ul v-else style="margin: 2em">
@@ -52,6 +52,7 @@
 </template>
 
 <script>
+    var apiKey = 'AIzaSyBjTdt2MEa14lzK0EakTkL4pgRCNg4I7zc'
     export default {
 
         data(){
@@ -59,10 +60,10 @@
                 bloggerData: null,
                 isInit: false,
                 isSignIn: false,
-                accesTokken:0,
+                accesToken:localStorage.getItem('acces-token'),
                 allBlogs: '',
                 allPostsOfBlog: '',
-                username:''
+                username:localStorage.getItem('username')
             }
         },
         mounted() {
@@ -97,8 +98,8 @@
                             this.$gAuth.GoogleAuth.currentUser.get().getAuthResponse()
                         );
                         this.isSignIn = this.$gAuth.isAuthorized;
-                        this.accessToken = GoogleUser.getAuthResponse()['access_token'];
-                        this.username = GoogleUser.getBasicProfile()['Bd'];
+                        localStorage.setItem('acces-tokken',GoogleUser.getAuthResponse()['access_token'])
+                        localStorage.setItem('username', GoogleUser.getBasicProfile()['Bd'])
                     })
                     .catch(error => {
                         //on fail do something
@@ -112,6 +113,8 @@
                         //on success do something
                         this.isSignIn = this.$gAuth.isAuthorized;
                         console.log("isSignIn", this.$gAuth.isAuthorized);
+                        localStorage.clear()
+
                     })
                     .catch(error => {
                         //on fail do something
@@ -124,7 +127,7 @@
             getAllBlogs(){
 
                 const axios = require('axios');
-                axios.get('https://www.googleapis.com/blogger/v3/users/self/blogs?access_token=' + this.accessToken)
+                axios.get('https://www.googleapis.com/blogger/v3/users/self/blogs?access_token=' + localStorage.getItem('acces-tokken'))
                     .then(response => {
                         this.allBlogs = response.data['items']
                     })
@@ -133,13 +136,27 @@
                     });
 
             },
+            deleteABlog(id, pid){
+                console.log('ID: ' + id + ' Pid: ' + pid)
+                const axios = require('axios');
+
+                axios.delete('https://www.googleapis.com/blogger/v3/blogs/' + id + '/posts/' + pid + '?access_token=' + localStorage.getItem('acces-tokken'))
+                    .then(response => {
+                        console.log(response)
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+                this.getAllBlogs()
+            },
             postsOfBlog(id){
 
                 const axios = require('axios');
-                axios.get('https://www.googleapis.com/blogger/v3/blogs/'+ id +'/posts?key=AIzaSyBjTdt2MEa14lzK0EakTkL4pgRCNg4I7zc')
+                axios.get('https://www.googleapis.com/blogger/v3/blogs/'+ id +'/posts?key=' + apiKey)
                     .then(response => {
                         if (response.data.items != undefined){
                             this.allPostsOfBlog = response.data['items']
+                            console.log(this.allPostsOfBlog)
                         }else {
                             this.allPostsOfBlog = 'Keine Posts'
                         }
