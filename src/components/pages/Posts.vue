@@ -18,10 +18,10 @@
         </div>
       </div>
       <div>
-        <button type="button" class="btn btn-danger mr-1 shadow-none">
+        <button type="button" class="btn btn-danger mr-1 shadow-none" @click="DeletePost(Post.id)">
           <VueFontawesome icon="trash" class="mr-2" size="1" />Delete
         </button>
-          <a class="btn btn-warning mr-1 shadow-none" :href="'/Posts/' + Post.blog.id + '/Post/' + Post.id">
+        <a class="btn btn-warning mr-1 shadow-none" :href="'/Posts/' + Post.blog.id + '/Post/' + Post.id">
           <VueFontawesome icon="arrows" class="mr-2" size="1" />Click for More
         </a>
       </div>
@@ -34,27 +34,36 @@ import ApiResult from "../../SubClasses/ApiResult.js";
 var BlogID = window.location.href.split("/")[4];
 var AccessToken = localStorage.getItem("AccessToken");
 var AccessTokenString = "?access_token=" + AccessToken;
-var UserPostsLink = "https://www.googleapis.com/blogger/v3/blogs/" + BlogID + "/posts" + AccessTokenString;
+var UserPostsLink =
+  "https://www.googleapis.com/blogger/v3/blogs/" +
+  BlogID +
+  "/posts" +
+  AccessTokenString;
+
+  var UserOnePostLink =
+  "https://www.googleapis.com/blogger/v3/blogs/" +
+  BlogID +
+  "/posts/";
 
 export default {
   name: "Posts",
   data() {
-    return { Posts: {}, Items:{} };
+    return { Posts: {} };
   },
   methods: {
     GetPosts: function() {
-      ApiResult.GetResult(UserPostsLink).then(Result => {
+      ApiResult.ApplyREST("GET", UserPostsLink, null).then(Result => {
         this.Posts = Result.data["items"].sort(function(a, b) {
           return b.id - a.id;
         });
       });
-    },   
-    CheckUserStatus: function() {
-      this.GetPosts();
+    },
+    DeletePost: function(KEY) {
+      ApiResult.ApplyREST("DELETE", UserOnePostLink + KEY + AccessTokenString, null).then(this.GetPosts());
     }
   },
   mounted() {
-    this.CheckUserStatus();
+    this.GetPosts();
   }
 };
 </script>

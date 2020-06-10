@@ -1,10 +1,10 @@
 <template>
   <div>
-  <footer class="navbar bg-dark text-white">
-    <div class="text-left">
-      <small>Google Blogger API Projekt &copy;  {{ new Date().getFullYear() }}</small>
-    </div>
-  </footer>
+    <footer class="navbar bg-dark text-white">
+      <div class="text-left">
+        <small>Google Blogger API Projekt &copy; {{ new Date().getFullYear() }}</small>
+      </div>
+    </footer>
   </div>
 </template>
 

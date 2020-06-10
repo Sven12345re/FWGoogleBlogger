@@ -1,11 +1,12 @@
 import axios from "axios";
 export default {
-    GetResult: function (URL) {
+    ApplyREST: function (Method, URL, Data) {
         return axios(URL, {
-            method: "GET",
-            Headers: {
+            method: Method,
+            headers: {
                 "Content-Type": "application/json"
-            }
+            },
+            data: Data,
         }).then(Response => Response);
     }
 };

@@ -12,7 +12,7 @@
           </span>
           <br />
           <span class="text-dark">
-            {{ Post.author.displayName }}        
+            {{ Post.author.displayName }}
             <VueFontawesome icon="user" class="ml-1" size="1" />
           </span>
         </div>
@@ -22,7 +22,7 @@
         <button type="button" class="btn btn-success mr-1 shadow-none">
           <VueFontawesome icon="pencil" class="mr-2" size="1" />Edit
         </button>
-        <button type="button" class="btn btn-danger mr-1 shadow-none">
+        <button type="button" class="btn btn-danger mr-1 shadow-none" @click="DeletePost(Post.id)">
           <VueFontawesome icon="trash" class="mr-2" size="1" />Delete
         </button>
       </div>
@@ -37,8 +37,18 @@ var PostID = window.location.href.split("/")[6];
 
 var AccessToken = localStorage.getItem("AccessToken");
 var AccessTokenString = "?access_token=" + AccessToken;
-var UserPostsLink = "https://www.googleapis.com/blogger/v3/blogs/" + BlogID + "/posts/" + PostID + AccessTokenString;
-console.log(UserPostsLink)
+var UserPostsLink =
+  "https://www.googleapis.com/blogger/v3/blogs/" +
+  BlogID +
+  "/posts/" +
+  PostID +
+  AccessTokenString;
+
+  var UserOnePostLink =
+  "https://www.googleapis.com/blogger/v3/blogs/" +
+  BlogID +
+  "/posts/";  
+
 export default {
   name: "Post",
   data() {
@@ -46,17 +56,16 @@ export default {
   },
   methods: {
     GetPost: function() {
-      ApiResult.GetResult(UserPostsLink).then(Result => {
+      ApiResult.ApplyREST("GET", UserPostsLink, null).then(Result => {
         this.Post = Result["data"];
       });
-
-    },   
-    CheckUserStatus: function() {
-      this.GetPost();
-    }
+    },
+    DeletePost: function(KEY) {
+      ApiResult.ApplyREST("DELETE", UserOnePostLink + KEY + AccessTokenString, null).then(this.GetPosts());
+    }    
   },
   mounted() {
-    this.CheckUserStatus();
+    this.GetPost();
   }
 };
 </script>
