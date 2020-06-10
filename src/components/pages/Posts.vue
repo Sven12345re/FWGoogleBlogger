@@ -18,9 +18,6 @@
         </div>
       </div>
       <div>
-        <button type="button" class="btn btn-success mr-1 shadow-none">
-          <VueFontawesome icon="pencil" class="mr-2" size="1" />Edit
-        </button>
         <button type="button" class="btn btn-danger mr-1 shadow-none">
           <VueFontawesome icon="trash" class="mr-2" size="1" />Delete
         </button>
