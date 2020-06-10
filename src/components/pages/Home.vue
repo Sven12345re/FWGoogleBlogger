@@ -13,6 +13,9 @@
         </div>
       </div>
       <div>
+        <a class="btn btn-info mr-1 shadow-none" :href="Blog.url" target="_blank">
+          <VueFontawesome icon="info-circle" class="mr-2" size="1" />Show Blog On The Web
+        </a>        
         <a class="btn btn-warning mr-1 shadow-none" :href="'/Posts/' + Blog.id">
           <VueFontawesome icon="arrow-right" class="mr-2" size="1" />Show All Posts Of This Blog
         </a>

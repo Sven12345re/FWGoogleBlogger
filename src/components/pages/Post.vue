@@ -61,7 +61,7 @@ export default {
       });
     },
     DeletePost: function(KEY) {
-      ApiResult.ApplyREST("DELETE", UserOnePostLink + KEY + AccessTokenString, null).then(this.GetPosts());
+      ApiResult.ApplyREST("DELETE", UserOnePostLink + KEY + AccessTokenString, null).then(window.location.replace("/Posts/" + BlogID));
     }    
   },
   mounted() {
