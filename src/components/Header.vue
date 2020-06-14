@@ -22,6 +22,7 @@
     <div class="container-fluid w-90 mt-3 mb-3">
       <div id="AnonymousContainer">
         <h4 class="text-white mb-4 bg-warning rounded p-3 text-center">You Must Sign in First</h4>
+        <landingpage />
       </div>
       <div id="LoggedInContainer">
         <h3 class="text-white mb-4 bg-info rounded p-3">
@@ -33,8 +34,12 @@
 </template>
 
 <script>
+import landingpage from './Landingpage/landinpage'
 var LocalStorageUserName = localStorage.getItem("Username");
 export default {
+  components :{
+   landingpage
+  },
   data() {
     return {
       Links: []
