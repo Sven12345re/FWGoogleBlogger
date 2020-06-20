@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import ApiResult from "../../SubClasses/ApiResult.js";
+import ApiResult from "@/SubClasses/ApiResult.js";
 var UserBlogsLink =
   "https://www.googleapis.com/blogger/v3/users/self/blogs?access_token=";
 var AccessToken = localStorage.getItem("AccessToken");

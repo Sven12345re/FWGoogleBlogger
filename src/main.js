@@ -3,6 +3,7 @@ import App from './App.vue';
 import router from './router';
 import moment from 'moment';
 import GAuth from 'vue-google-oauth2'
+import VueSimpleAlert from "vue-simple-alert";
 
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -19,7 +20,9 @@ const GoogleOptions = {
   scope: 'https://www.blogger.com/feeds/',
   prompt: 'select_account'
 }
-Vue.use(GAuth, GoogleOptions)
+Vue.use(GAuth, GoogleOptions);
+Vue.use(VueSimpleAlert);
+
 Vue.component("VueFontawesome", require("vue-fontawesome-icon/VueFontawesome.vue").default);
 new Vue({
   router,

@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import ApiResult from "../../SubClasses/ApiResult.js";
+import ApiResult from "@/SubClasses/ApiResult.js";
 var BlogID = window.location.href.split("/")[4];
 var PostID = window.location.href.split("/")[6];
 
@@ -61,7 +61,22 @@ export default {
       });
     },
     DeletePost: function(KEY) {
-      ApiResult.ApplyREST("DELETE", UserOnePostLink + KEY + AccessTokenString, null).then(window.location.replace("/Posts/" + BlogID));
+      this.$confirm("Are you sure?").then(() => {
+        ApiResult.ApplyREST(
+          "DELETE",
+          UserOnePostLink + KEY + AccessTokenString,
+          null
+        ).then();
+        this.$fire({
+          title: "Done",
+          text: "Thanks for Adding a New Post .. Refreshing in 5 Seconds",
+          type: "success"
+        }).then(
+          setTimeout(function() {
+            window.location.href = "/Posts/" + BlogID;
+          }, 5000)
+        );
+      });      
     }    
   },
   mounted() {
