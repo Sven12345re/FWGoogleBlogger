@@ -1,5 +1,6 @@
 <template>
-  <div class="container-fluid w-90 mt-3 mb-3">
+  <div class="container-fluid w-90 mt-3 mb-3">        
+        <EditPost />
     <div class="p-3 card bg-light text-dark mb-3">
       <div class="row">
         <div class="col-sm-8 text-left">
@@ -19,9 +20,6 @@
       </div>
       <div class="mt-2 mb-4" v-html="Post.content"></div>
       <div>
-        <button type="button" class="btn btn-success mr-1 shadow-none">
-          <VueFontawesome icon="pencil" class="mr-2" size="1" />Edit
-        </button>
         <button type="button" class="btn btn-danger mr-1 shadow-none" @click="DeletePost(Post.id)">
           <VueFontawesome icon="trash" class="mr-2" size="1" />Delete
         </button>
@@ -31,7 +29,11 @@
 </template>
 
 <script>
+// We can the Axios Methode and get the AccessToken from LocalStorage
+import EditPost from "@/components/EditPost";
 import ApiResult from "@/SubClasses/ApiResult.js";
+
+// Get BlogId & PostId from the URL
 var BlogID = window.location.href.split("/")[4];
 var PostID = window.location.href.split("/")[6];
 
@@ -51,6 +53,9 @@ var UserPostsLink =
 
 export default {
   name: "Post",
+    components: {
+    EditPost
+  },
   data() {
     return { Post: {} };
   },
@@ -60,6 +65,9 @@ export default {
         this.Post = Result["data"];
       });
     },
+    // With Delete we call first an Alert for Confirmation then we can ApplyREST if it's ok
+    // After it's done we Redirect in 5 Seconds, becuase API needs time to get refreshed on the Server
+    // So if we refresh direclty we MIGHT not get the Result immediately          
     DeletePost: function(KEY) {
       this.$confirm("Are you sure?").then(() => {
         ApiResult.ApplyREST(

@@ -12,12 +12,17 @@
 </template>
 
 <script>
+// We can the Axios Methode and get the AccessToken from LocalStorage
 import ApiResult from "@/SubClasses/ApiResult";
+
+// Get BlogId from the URL
 var BlogID = window.location.href.split("/")[4];
 var AccessToken = localStorage.getItem("AccessToken");
 var AccessTokenString = "?access_token=" + AccessToken;
 var UserAddPostLink =
   "https://www.googleapis.com/blogger/v3/blogs/" + BlogID + "/posts/";
+
+// Declare a JSON Data for later when we Update
 var jsonAddPost = {
   kind: "blogger#post",
   blog: {
@@ -33,6 +38,9 @@ export default {
     contentPost: ""
   }),
   methods: {
+    // With Delete we call first an Alert for Success Message then we can ApplyREST
+    // After it's done we Redirect in 5 Seconds, becuase API needs time to get refreshed on the Server
+    // So if we refresh direclty we MIGHT not get the Result immediately      
     AddPost: function() {
       this.$fire({
         title: "Done",

@@ -37,8 +37,11 @@
 </template>
 
 <script>
+// We can the Axios Methode and get the AccessToken from LocalStorage
 import AddPost from "@/components/AddPost";
 import ApiResult from "@/SubClasses/ApiResult.js";
+
+// Get BlogId from the URL
 var BlogID = window.location.href.split("/")[4];
 var AccessToken = localStorage.getItem("AccessToken");
 var AccessTokenString = "?access_token=" + AccessToken;
@@ -67,6 +70,9 @@ export default {
         });
       });
     },
+    // With Delete we call first an Alert for Confirmation then we can ApplyREST if it's ok    
+    // After it's done we Redirect in 5 Seconds, becuase API needs time to get refreshed on the Server
+    // So if we refresh direclty we MIGHT not get the Result immediately          
     DeletePost: function(KEY) {
       this.$confirm("Are you sure?").then(() => {
         ApiResult.ApplyREST(
