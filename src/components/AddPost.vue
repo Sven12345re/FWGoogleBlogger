@@ -38,7 +38,7 @@ export default {
     contentPost: ""
   }),
   methods: {
-    // With Delete we call first an Alert for Success Message then we can ApplyREST
+    // With ADD we call first an Alert for Success Message then we can ApplyREST
     // After it's done we Redirect in 5 Seconds, becuase API needs time to get refreshed on the Server
     // So if we refresh direclty we MIGHT not get the Result immediately      
     AddPost: function() {

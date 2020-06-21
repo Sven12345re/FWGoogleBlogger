@@ -52,7 +52,7 @@ export default {
     EditPost: function() {
       this.$fire({
         title: "Done",
-        text: "Thanks for Update the Post .. Refreshing in 5 Seconds",
+        text: "Thanks for Editing the Post .. Refreshing in 5 Seconds",
         type: "success"
       }).then(
         setTimeout(function() {

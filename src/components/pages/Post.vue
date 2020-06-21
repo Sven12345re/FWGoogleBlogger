@@ -77,7 +77,7 @@ export default {
         ).then();
         this.$fire({
           title: "Done",
-          text: "Thanks for Adding a New Post .. Refreshing in 5 Seconds",
+          text: "Thanks for Deleting the Post .. Refreshing in 5 Seconds",
           type: "success"
         }).then(
           setTimeout(function() {
