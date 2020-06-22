@@ -28,7 +28,8 @@
 </template>
 
 <script>
-import ApiResult from "../../SubClasses/ApiResult.js";
+// We can the Axios Methode and get the AccessToken from LocalStorage
+import ApiResult from "@/SubClasses/ApiResult.js";
 var UserBlogsLink =
   "https://www.googleapis.com/blogger/v3/users/self/blogs?access_token=";
 var AccessToken = localStorage.getItem("AccessToken");
@@ -39,6 +40,7 @@ export default {
     return { Blogs: {} };
   },
   methods: {
+    // Get all Blogs and sort them
     GetBlogs: function() {
       ApiResult.ApplyREST("GET", UserBlogsLink + AccessToken, null).then(
         Result => {
@@ -55,4 +57,6 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>
