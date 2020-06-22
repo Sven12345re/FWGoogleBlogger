@@ -19,9 +19,6 @@
         <a class="btn btn-warning mr-1 shadow-none" :href="'/Posts/' + Blog.id">
           <VueFontawesome icon="arrow-right" class="mr-2" size="1" />Show All Posts Of This Blog
         </a>
-        <button type="button" class="btn btn-danger mr-1 shadow-none" @click="DeletePost(Post.id)">
-          <VueFontawesome icon="trash" class="mr-2" size="1" />Delete
-        </button>
       </div>
     </div>
   </div>
