@@ -1,6 +1,5 @@
 <template>
-  <div class="container-fluid w-90 mt-3 mb-3">        
-        <EditPost />
+  <div class="container-fluid w-90 mt-3 mb-3">
     <div class="p-3 card bg-light text-dark mb-3">
       <div class="row">
         <div class="col-sm-8 text-left">
@@ -20,9 +19,19 @@
       </div>
       <div class="mt-2 mb-4" v-html="Post.content"></div>
       <div>
+        <router-link :to="{name: 'postsOfBlog'}">
+          <button class="btn btn-info mr-1 shadow-none">
+            <VueFontawesome icon="arrow-left" aria-hidden="true" class="mr-1" size="1" />Back
+          </button>
+        </router-link>
         <button type="button" class="btn btn-danger mr-1 shadow-none" @click="DeletePost(Post.id)">
           <VueFontawesome icon="trash" class="mr-2" size="1" />Delete
         </button>
+        <router-link :to="{name: 'editPost'}">
+          <button class="btn btn-success mr-1 shadow-none">
+            <VueFontawesome icon="edit" aria-hidden="true" class="mr-1" size="1" />Edit Post
+          </button>
+        </router-link>
       </div>
     </div>
   </div>
@@ -30,7 +39,6 @@
 
 <script>
 // We can the Axios Methode and get the AccessToken from LocalStorage
-import EditPost from "@/components/EditPost";
 import ApiResult from "@/SubClasses/ApiResult.js";
 
 // Get BlogId & PostId from the URL
@@ -54,7 +62,6 @@ var UserPostsLink =
 export default {
   name: "Post",
     components: {
-    EditPost
   },
   data() {
     return { Post: {} };

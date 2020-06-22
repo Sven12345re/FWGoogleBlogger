@@ -1,6 +1,10 @@
 <template>
   <div class="container-fluid w-90 mt-3 mb-3">
-    <AddPost />
+    <router-link :to="{name: 'addPost'}">
+      <button class="mb-4 ml-2 btn btn-info mr-1 shadow-none">
+        <VueFontawesome aria-hidden="true" class="mr-1" size="1" />Add Post
+      </button>
+    </router-link>
     <div class="p-3 card bg-light text-dark mb-3" v-for="Post in Posts" v-bind:key="Post.id">
       <div class="row">
         <div class="col-sm-8 text-left">
@@ -38,7 +42,6 @@
 
 <script>
 // We can the Axios Methode and get the AccessToken from LocalStorage
-import AddPost from "@/components/AddPost";
 import ApiResult from "@/SubClasses/ApiResult.js";
 
 // Get BlogId from the URL
@@ -57,7 +60,6 @@ var UserOnePostLink =
 export default {
   name: "Posts",
   components: {
-    AddPost
   },
   data() {
     return { Posts: {} };
