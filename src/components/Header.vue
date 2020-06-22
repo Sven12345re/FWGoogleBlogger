@@ -22,6 +22,7 @@
     <div class="container-fluid w-90 mt-3 mb-3">
       <div id="AnonymousContainer">
         <h4 class="text-white mb-4 bg-warning rounded p-3 text-center">You Must Sign in First</h4>
+        <Landinpage />
       </div>
       <div id="LoggedInContainer">
         <h3 class="text-white mb-4 bg-info rounded p-3">
@@ -33,8 +34,14 @@
 </template>
 
 <script>
+import Landinpage from "@/components/Landinpage";
+
 var LocalStorageUserName = localStorage.getItem("Username");
+
 export default {
+  components: {
+    Landinpage
+  },
   data() {
     return {
       Links: []
@@ -73,6 +80,7 @@ export default {
       var CurrentClass = UserStatusButton.classList;
       UserStatus.innerText = LocalStorageUserName || "Sign in";
 
+      // Show and Hide Divs based on User Status if Logged in or Not
       if (LocalStorageUserName == undefined) {
         UserStatusButton.setAttribute(
           "class",

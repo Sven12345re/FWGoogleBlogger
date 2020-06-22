@@ -9,6 +9,7 @@
 </template>
 
 <script>
+// Nothing Amazing here
 export default {
   data() {
     return {};
