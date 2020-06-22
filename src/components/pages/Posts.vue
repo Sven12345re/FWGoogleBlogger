@@ -11,11 +11,20 @@
             {{ Post.updated | formatDate }}
             <VueFontawesome icon="clock-o" class="ml-1" size="1" />
           </span>
-          <br />
-          <span class="text-dark">
+            <br />
+            <span class="text-dark">
             {{ Post.author.displayName }}
             <VueFontawesome icon="user" class="ml-1" size="1" />
           </span>
+          </div>
+        </div>
+        <div>
+          <button type="button" class="btn btn-danger mr-1 shadow-none" @click="DeletePost(Post.id)">
+            <VueFontawesome icon="trash" class="mr-2" size="1" />Delete
+          </button>
+          <a class="btn btn-warning mr-1 shadow-none" :href="'/Posts/' + Post.blog.id + '/Post/' + Post.id">
+            <VueFontawesome icon="arrows" class="mr-2" size="1" />Click for More
+          </a>
         </div>
       </div>
       <div>
@@ -33,6 +42,7 @@
         </div>
       </div>
     </div>
+    <div class="p-3 card bg-light text-dark mb-3" v-else>Keine Posts</div>
   </div>
 </template>
 
@@ -65,9 +75,11 @@ export default {
   methods: {
     GetPosts: function() {
       ApiResult.ApplyREST("GET", UserPostsLink, null).then(Result => {
-        this.Posts = Result.data["items"].sort(function(a, b) {
-          return b.id - a.id;
-        });
+        if(Result.data["items"]){
+          this.Posts = Result.data["items"].sort(function(a, b) {
+            return b.id - a.id;
+          });
+        }
       });
     },
     // With Delete we call first an Alert for Confirmation then we can ApplyREST if it's ok    
